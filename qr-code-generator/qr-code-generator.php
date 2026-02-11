@@ -124,6 +124,17 @@ class QR_Code_Generator {
                     'invalidUrl'     => __( 'Please enter a valid URL.', 'qr-code-generator' ),
                     'generating'     => __( 'Generating QR Code...', 'qr-code-generator' ),
                     'downloadSuccess' => __( 'QR Code downloaded successfully!', 'qr-code-generator' ),
+                    'urlTooLong'     => __( 'URL is too long (max 2048 characters).', 'qr-code-generator' ),
+                    'invalidSize'    => __( 'Size must be between 100 and 1000.', 'qr-code-generator' ),
+                    'invalidMargin'  => __( 'Margin must be between 0 and 50.', 'qr-code-generator' ),
+                    'invalidColor'   => __( 'Please enter valid hex colors.', 'qr-code-generator' ),
+                    'lowContrast'    => __( 'QR and background colors are too similar. Increase contrast.', 'qr-code-generator' ),
+                    'success'        => __( 'QR Code ready.', 'qr-code-generator' ),
+                    'shareText'      => __( 'Check out this QR code generator!', 'qr-code-generator' ),
+                    'shareSuccess'   => __( 'Thanks for sharing!', 'qr-code-generator' ),
+                    'shareCanceled'  => __( 'Share canceled.', 'qr-code-generator' ),
+                    'copySuccess'    => __( 'Link copied to clipboard.', 'qr-code-generator' ),
+                    'copyError'      => __( 'Unable to copy link.', 'qr-code-generator' ),
                 ),
             )
         );

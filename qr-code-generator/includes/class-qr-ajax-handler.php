@@ -84,19 +84,49 @@ class QR_Ajax_Handler {
             ), 400 );
         }
 
+        if ( strlen( $url ) > 2048 ) {
+            wp_send_json_error( array(
+                'message' => __( 'URL is too long (max 2048 characters).', 'qr-code-generator' ),
+            ), 400 );
+        }
+
         // Get optional parameters
         $options = array();
         if ( isset( $_POST['size'] ) ) {
-            $options['size'] = absint( $_POST['size'] );
+            $size = absint( $_POST['size'] );
+            if ( $size < 100 || $size > 1000 ) {
+                wp_send_json_error( array(
+                    'message' => __( 'Size must be between 100 and 1000.', 'qr-code-generator' ),
+                ), 400 );
+            }
+            $options['size'] = $size;
         }
         if ( isset( $_POST['margin'] ) ) {
-            $options['margin'] = absint( $_POST['margin'] );
+            $margin = absint( $_POST['margin'] );
+            if ( $margin < 0 || $margin > 50 ) {
+                wp_send_json_error( array(
+                    'message' => __( 'Margin must be between 0 and 50.', 'qr-code-generator' ),
+                ), 400 );
+            }
+            $options['margin'] = $margin;
         }
         if ( isset( $_POST['color'] ) ) {
-            $options['color'] = sanitize_hex_color_no_hash( $_POST['color'] );
+            $color = sanitize_hex_color_no_hash( $_POST['color'] );
+            if ( empty( $color ) && ! empty( $_POST['color'] ) ) {
+                wp_send_json_error( array(
+                    'message' => __( 'Please provide a valid hex color.', 'qr-code-generator' ),
+                ), 400 );
+            }
+            $options['color'] = $color;
         }
         if ( isset( $_POST['bgcolor'] ) ) {
-            $options['bgcolor'] = sanitize_hex_color_no_hash( $_POST['bgcolor'] );
+            $bgcolor = sanitize_hex_color_no_hash( $_POST['bgcolor'] );
+            if ( empty( $bgcolor ) && ! empty( $_POST['bgcolor'] ) ) {
+                wp_send_json_error( array(
+                    'message' => __( 'Please provide a valid background hex color.', 'qr-code-generator' ),
+                ), 400 );
+            }
+            $options['bgcolor'] = $bgcolor;
         }
         if ( isset( $_POST['ecc'] ) ) {
             $options['ecc'] = sanitize_text_field( $_POST['ecc'] );
@@ -104,6 +134,20 @@ class QR_Ajax_Handler {
 
         // Sanitize options
         $options = $this->generator->sanitize_options( $options );
+        $options = wp_parse_args( $options, array(
+            'size'    => 300,
+            'margin'  => 0,
+            'color'   => '000000',
+            'bgcolor' => 'ffffff',
+            'ecc'     => 'M',
+        ) );
+
+        $contrast = QR_Generator::calculate_contrast_ratio( $options['color'], $options['bgcolor'] );
+        if ( $contrast < 2.5 ) {
+            wp_send_json_error( array(
+                'message' => __( 'QR and background colors are too similar. Increase contrast.', 'qr-code-generator' ),
+            ), 400 );
+        }
 
         // Generate QR code
         $result = $this->generator->generate( $url, $format, $options );
