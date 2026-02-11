@@ -12,6 +12,11 @@
     margin: 0 auto;
     padding: 40px 20px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    box-sizing: border-box;
+}
+
+.qr-code-generator-wrapper * {
+    box-sizing: inherit;
 }
 
 .qr-generator-container {
@@ -78,6 +83,9 @@
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .qr-generate-btn:hover {
@@ -98,20 +106,16 @@
 
 .qr-generate-btn.loading {
     position: relative;
-    color: transparent;
 }
 
 .qr-generate-btn .spinner {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border: 3px solid rgba(255, 255, 255, 0.3);
     border-top-color: #ffffff;
     border-radius: 50%;
     animation: qr-spin 0.8s linear infinite;
+    display: inline-block;
 }
 
 @keyframes qr-spin {
@@ -168,6 +172,19 @@
     gap: 5px;
 }
 
+.qr-help-text {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.qr-status {
+    margin: 6px 0 10px;
+    font-size: 13px;
+    color: #333;
+    min-height: 18px;
+}
+
 .qr-option-group label {
     font-size: 14px;
     font-weight: 600;
@@ -192,6 +209,26 @@
 .qr-option-group input[type="color"] {
     height: 45px;
     cursor: pointer;
+}
+
+.qr-color-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    align-items: center;
+}
+
+.qr-color-hex-input {
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    text-transform: lowercase;
+}
+
+.qr-color-hex-input:focus {
+    border-color: #4CAF50;
+    outline: none;
 }
 
 /* ========================================
@@ -257,6 +294,7 @@
     padding: 20px;
     display: inline-block;
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .qr-code-image {
@@ -266,6 +304,8 @@
 }
 
 .qr-code-display svg {
+    display: block;
+    width: 100%;
     max-width: 100%;
     height: auto;
 }
@@ -281,6 +321,7 @@
 }
 
 .qr-download-btn,
+.qr-share-btn,
 .qr-generate-new {
     padding: 12px 24px;
     font-size: 15px;
@@ -322,6 +363,17 @@
     color: #4CAF50;
 }
 
+.qr-share-btn {
+    background: #8E24AA;
+    color: #ffffff;
+}
+
+.qr-share-btn:hover {
+    background: #7B1FA2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(142, 36, 170, 0.3);
+}
+
 /* ========================================
    Responsive Design
    ======================================== */
@@ -351,6 +403,44 @@
     }
 
     .qr-download-btn,
+    .qr-generate-new {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .qr-generator-container {
+        padding: 24px 16px;
+    }
+
+    .qr-generator-title {
+        font-size: 20px;
+    }
+
+    .qr-generator-subtitle {
+        font-size: 14px;
+    }
+
+    .qr-input-group {
+        gap: 8px;
+    }
+
+    .qr-generate-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .qr-options-panel {
+        padding: 15px;
+    }
+
+    .qr-color-pair {
+        grid-template-columns: 1fr;
+    }
+
+    .qr-download-btn,
+    .qr-share-btn,
     .qr-generate-new {
         width: 100%;
         justify-content: center;
