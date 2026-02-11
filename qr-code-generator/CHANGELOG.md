@@ -74,7 +74,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [1.0.1]
+
+### Added
+- Documentation: `action.md` with a focused fix plan for responsive layout, SVG preview, validation limits, color UX, loader feedback, sharing, and dark color QR issues.
+- UI: Hex text inputs synchronized with color pickers, helper text, and status line for clearer feedback.
+- UX: Share button with Web Share API and clipboard fallback.
+- Options: Error correction selector (defaults to M) for more resilient codes.
+
+### Changed
+- Responsiveness improvements for small screens (<=480px) and stacked controls on mobile.
+- Loader now keeps button text visible with a spinner and status line instead of masking text.
+- SVG preview handling to prevent cropping and scale responsively.
+
+### Fixed
+- Input validation for URL length (2048 max), size (100-1000), margin (0-50), and hex colors on client and server.
+- Contrast checks for QR/Background colors to prevent unreadable dark combinations.
 
 ### Planned Features
 - Bulk QR code generation
