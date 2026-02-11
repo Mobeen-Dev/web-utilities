@@ -58,14 +58,9 @@
                 QRCodeGen.currentFormat = $(this).val();
             });
 
-            // Color sync: picker -> hex
-            $(document).on('input', '#qr-color, #qr-bgcolor', function () {
-                QRCodeGen.syncPickerToHex($(this));
-            });
-
-            // Color sync: hex -> picker
+            // Color sync: hex -> swatch
             $(document).on('input', '#qr-color-hex, #qr-bgcolor-hex', function () {
-                QRCodeGen.syncHexToPicker($(this));
+                QRCodeGen.updateColorSwatch($(this));
             });
 
             // Share button
@@ -109,31 +104,27 @@
         },
 
         /**
-         * Color picker -> hex input sync
+         * Hex input -> swatch sync
          */
-        syncPickerToHex: function ($picker) {
-            const id = $picker.attr('id');
-            const hexInputId = id === 'qr-color' ? '#qr-color-hex' : '#qr-bgcolor-hex';
-            const normalized = this.normalizeHex($picker.val());
-            $(hexInputId).val(normalized);
-        },
-
-        /**
-         * Hex input -> color picker sync
-         */
-        syncHexToPicker: function ($hex) {
+        updateColorSwatch: function ($hex) {
             const id = $hex.attr('id');
-            const pickerId = id === 'qr-color-hex' ? '#qr-color' : '#qr-bgcolor';
-            const normalized = this.normalizeHex($hex.val());
-            $(pickerId).val(normalized);
+            const swatchId = id === 'qr-color-hex' ? '#qr-color-swatch' : '#qr-bgcolor-swatch';
+            const fallback = id === 'qr-color-hex' ? '#000000' : '#ffffff';
+            const raw = ($hex.val() || '').trim();
+            if (!this.validateHex(raw)) {
+                return;
+            }
+            const normalized = this.normalizeHex(raw, fallback);
+            $hex.val(normalized);
+            $(swatchId).css('background-color', normalized);
         },
 
         /**
          * Initial sync
          */
         syncHexInputs: function () {
-            this.syncPickerToHex($('#qr-color'));
-            this.syncPickerToHex($('#qr-bgcolor'));
+            this.updateColorSwatch($('#qr-color-hex'));
+            this.updateColorSwatch($('#qr-bgcolor-hex'));
         },
 
         /**
@@ -397,38 +388,46 @@
         },
 
         /**
+         * Copy text fallback
+         */
+        copyTextFallback: function (text) {
+            const $temp = $('<input>');
+            $('body').append($temp);
+            $temp.val(text).select();
+            const success = document.execCommand('copy');
+            $temp.remove();
+            return success;
+        },
+
+        /**
          * Share page
          */
         sharePage: function () {
-            const shareData = {
-                title: document.title || 'QR Code Generator',
-                text: qrCodeGenerator.strings.shareText || 'Check out this QR code generator!',
-                url: window.location.href,
+            const url = window.location.href;
+            const showSuccess = () => {
+                this.showMessage(qrCodeGenerator.strings.copySuccess || 'Link copied to clipboard.', 'success');
+            };
+            const showError = () => {
+                this.showMessage(qrCodeGenerator.strings.copyError || 'Unable to copy link.', 'error');
             };
 
-            if (navigator.share) {
-                navigator.share(shareData).then(() => {
-                    this.showMessage(qrCodeGenerator.strings.shareSuccess || 'Thanks for sharing!', 'success');
-                }).catch(() => {
-                    this.showMessage(qrCodeGenerator.strings.shareCanceled || 'Share canceled.', 'info');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(showSuccess).catch(() => {
+                    const success = this.copyTextFallback(url);
+                    if (success) {
+                        showSuccess();
+                    } else {
+                        showError();
+                    }
                 });
-            } else if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(shareData.url).then(() => {
-                    this.showMessage(qrCodeGenerator.strings.copySuccess || 'Link copied to clipboard.', 'success');
-                }).catch(() => {
-                    this.showMessage(qrCodeGenerator.strings.copyError || 'Unable to copy link.', 'error');
-                });
+                return;
+            }
+
+            const success = this.copyTextFallback(url);
+            if (success) {
+                showSuccess();
             } else {
-                const $temp = $('<input>');
-                $('body').append($temp);
-                $temp.val(shareData.url).select();
-                const success = document.execCommand('copy');
-                $temp.remove();
-                if (success) {
-                    this.showMessage(qrCodeGenerator.strings.copySuccess || 'Link copied to clipboard.', 'success');
-                } else {
-                    this.showMessage(qrCodeGenerator.strings.copyError || 'Unable to copy link.', 'error');
-                }
+                showError();
             }
         }
     };

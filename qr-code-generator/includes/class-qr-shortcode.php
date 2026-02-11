@@ -98,7 +98,7 @@ class QR_Shortcode {
                             <?php echo esc_html( $atts['button_text'] ); ?>
                         </button>
                     </div>
-                    <p id="qr-url-help" class="qr-help-text"><?php esc_html_e( 'Enter a valid URL (up to 2048 characters).', 'qr-code-generator' ); ?></p>
+                    <p id="qr-url-help" class="qr-help-text"><?php esc_html_e( 'Enter a valid URL (up to 250 characters).', 'qr-code-generator' ); ?></p>
                     <div class="qr-status" aria-live="polite" role="status"></div>
 
                     <?php if ( 'yes' === $atts['show_options'] ) : ?>
@@ -161,17 +161,10 @@ class QR_Shortcode {
                             </div>
 
                             <div class="qr-option-group">
-                                <label for="qr-color">
+                                <label for="qr-color-hex">
                                     <?php esc_html_e( 'Color:', 'qr-code-generator' ); ?>
                                 </label>
                                 <div class="qr-color-pair">
-                                    <input 
-                                        type="color" 
-                                        id="qr-color" 
-                                        class="qr-color-input" 
-                                        value="#000000"
-                                        aria-describedby="qr-color-help"
-                                    />
                                     <input 
                                         type="text" 
                                         id="qr-color-hex" 
@@ -182,22 +175,16 @@ class QR_Shortcode {
                                         placeholder="#000000"
                                         aria-describedby="qr-color-help"
                                     />
+                                    <span class="qr-color-swatch" id="qr-color-swatch" style="background-color: #000000;" aria-hidden="true"></span>
                                 </div>
                                 <p id="qr-color-help" class="qr-help-text"><?php esc_html_e( 'Use a Hex code like #000000.', 'qr-code-generator' ); ?></p>
                             </div>
 
                             <div class="qr-option-group">
-                                <label for="qr-bgcolor">
+                                <label for="qr-bgcolor-hex">
                                     <?php esc_html_e( 'Background:', 'qr-code-generator' ); ?>
                                 </label>
                                 <div class="qr-color-pair">
-                                    <input 
-                                        type="color" 
-                                        id="qr-bgcolor" 
-                                        class="qr-bgcolor-input" 
-                                        value="#ffffff"
-                                        aria-describedby="qr-bgcolor-help"
-                                    />
                                     <input 
                                         type="text" 
                                         id="qr-bgcolor-hex" 
@@ -208,6 +195,7 @@ class QR_Shortcode {
                                         placeholder="#ffffff"
                                         aria-describedby="qr-bgcolor-help"
                                     />
+                                    <span class="qr-color-swatch" id="qr-bgcolor-swatch" style="background-color: #ffffff;" aria-hidden="true"></span>
                                 </div>
                                 <p id="qr-bgcolor-help" class="qr-help-text"><?php esc_html_e( 'Use a Hex code like #ffffff.', 'qr-code-generator' ); ?></p>
                             </div>

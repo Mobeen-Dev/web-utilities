@@ -5,6 +5,15 @@ All notable changes to the QR Code Generator WordPress Plugin will be documented
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-02-11
+
+### Changed
+- Replaced color pickers with hex-only inputs and swatch previews.
+
+### Fixed
+- Button icon/spinner alignment and pressed-state visuals.
+- Share now copies the page URL to clipboard and shows a success toast.
+
 ## [1.0.0] - 2024-02-09
 
 ### Added

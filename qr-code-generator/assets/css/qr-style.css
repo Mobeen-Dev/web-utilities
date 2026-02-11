@@ -96,6 +96,7 @@
 
 .qr-generate-btn:active {
     transform: translateY(0);
+    box-shadow: none;
 }
 
 .qr-generate-btn:disabled {
@@ -116,10 +117,11 @@
     border-radius: 50%;
     animation: qr-spin 0.8s linear infinite;
     display: inline-block;
+    flex-shrink: 0;
 }
 
 @keyframes qr-spin {
-    to { transform: translate(-50%, -50%) rotate(360deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* ========================================
@@ -212,18 +214,27 @@
 }
 
 .qr-color-pair {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    display: flex;
     align-items: center;
+    gap: 8px;
 }
 
 .qr-color-hex-input {
+    flex: 1;
+    min-width: 0;
     padding: 10px;
     border: 1px solid #e0e0e0;
     border-radius: 6px;
     font-size: 14px;
     text-transform: lowercase;
+}
+
+.qr-color-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    flex-shrink: 0;
 }
 
 .qr-color-hex-input:focus {
@@ -350,6 +361,11 @@
     font-size: 18px;
     width: 18px;
     height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    vertical-align: middle;
 }
 
 .qr-generate-new {
@@ -372,6 +388,24 @@
     background: #7B1FA2;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(142, 36, 170, 0.3);
+}
+
+.qr-share-btn .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.qr-download-btn:active,
+.qr-share-btn:active,
+.qr-generate-new:active {
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 /* ========================================
